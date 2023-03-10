@@ -35,3 +35,20 @@ Timer
 	- Timer for when sf::Clock is not available, with a few extra features;
 	- .DeltaTime() gets seconds elapsed and restarts timer
 	- .FPS() gets 1/elapsed and restarts timer
+	
+AppData
+	- Provides Macro std::string for "%APPDATA%"
+	- _APPDATA_ -> "C:\\Users\\<name>\\AppData\\Roaming"
+	- APPDATA_PATH = _APPDATA_
+	- _APPDATA_CSTR_ -> Gets path as const char*
+	
+INSTALLATION (VS 20XX):
+	1. if using SFML, install as prefered.
+	2. Add "lib" and "include" folders to project directory
+	3. In Project Settings:
+		a) Add "include" to C/C++->General->Additional Include Directories
+		b) Add "lib" to Linker->General->Additional Library Directoies
+		c) Add "xephtools.lib" to Linker->Input->Additional Dependencies
+		c) Add "Shell32.lib" to Linker->Input->Additional Dependencies
+		d) if planning to use SFML, add "xinput.lib" to Linker->Input->Additional Dependencies as well
+	4. Add #include "XephTools.h" to your scripts
