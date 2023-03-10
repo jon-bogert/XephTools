@@ -1,6 +1,6 @@
 /*========================================================
 
- XephTools
+ XephTools - InputSystem
  Copyright (C) 2022 Jon Bogert (jonbogert@gmail.com)
 
  This software is provided 'as-is', without any express or implied warranty.
@@ -21,41 +21,40 @@
  3. This notice may not be removed or altered from any source distribution.
 
  USAGE NOTES:
- - Some modules are to be used with SFML (https://www.sfml-dev.org/)
-	- if planning on using, include SFML headers above XephTools.h or these modules will be disabled
-	- if planning on using, Add "xinput.lib" to Linker->Additional Dependencies
+  - Shell32 is required: Add "Shell32.lib" to Linker->Additional Dependencies
 
 ========================================================*/
 
-#ifndef XE_XEPH_TOOLS_H
-#define XE_XEPH_TOOLS_H
 
-//Checking if SFML is included
-#ifdef SFML_SYSTEM_HPP
-#ifdef SFML_SFML_WINDOW_HPP
-#ifdef SFML_GRAPHICS_HPP
+#ifndef XE_APPDATA_H
+#define XE_APPDATA_H
 
-#define XE_USING_SFML
+#include <ShlObj.h> // IMPORTANT: Must include Shell32.lib if using just the header file
+#include <iostream>
 
-#endif // SFML_GRAPHICS_HPP
-#endif // SFML_SFML_WINDOW_HPP
-#endif // SFML_SYSTEM_HPP
+namespace xe
+{
+	std::string AppDataDir()
+	{
+		PWSTR appdata = NULL;
+		if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, NULL, &appdata) == S_OK)
+		{
+			char dest[MAX_PATH];
+			size_t numElements;
+			wcstombs_s(&numElements, dest, appdata, MAX_PATH);
+			dest[numElements] = '\0';
+			return std::string(dest);
+		}
+		else
+		{
+			std::cerr << "Could not find %APPDATA%" << std::endl;
+			return std::string();
+		}
+	}
+}
 
-// Header Only
-#include "XephTools/Assert.h"
-#include "XephTools/Timer.h"
-#include "XephTools/AppData.h"
+#define _APPDATA_ xe::AppDataDir()
+#define APPDATA_PATH xe::AppDataDir()
+#define _APPDATA_CSTR_ xe::AppDataDir().c_str()
 
-// Header & CPP
-#include "XephTools/AesIO.h"
-#include "XephTools/BinaryIO.h"
-#include "XephTools/AesBinaryIO.h"
-#include "XephTools/Math.h"
-#include "XephTools/SaveFile.h"
-
-//SFML LIBRARY DEPENDANT
-#ifdef XE_USING_SFML
-#include "XephTools/InputSystem.h"
-#endif
-
-#endif // XE_XEPH_TOOLS_H
+#endif // XE_APPDATA_H

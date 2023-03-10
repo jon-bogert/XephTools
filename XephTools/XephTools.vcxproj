@@ -138,6 +138,7 @@
     <ClInclude Include="include\XephTools.h" />
     <ClInclude Include="include\XephTools\AesBinaryIO.h" />
     <ClInclude Include="include\XephTools\AesIO.h" />
+    <ClInclude Include="include\XephTools\AppData.h" />
     <ClInclude Include="include\XephTools\Assert.h" />
     <ClInclude Include="include\XephTools\BinaryIO.h" />
     <ClInclude Include="include\XephTools\InputSystem.h" />

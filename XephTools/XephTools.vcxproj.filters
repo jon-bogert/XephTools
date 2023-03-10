@@ -42,6 +42,9 @@
     <ClInclude Include="include\XephTools\AesBinaryIO.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\XephTools\AppData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SaveFile.cpp">
