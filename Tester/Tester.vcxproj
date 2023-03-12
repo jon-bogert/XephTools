@@ -144,6 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CoreBuilder.cpp" />
+    <ClCompile Include="TestClass.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

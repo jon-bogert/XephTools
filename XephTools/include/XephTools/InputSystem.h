@@ -38,7 +38,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 
-#define XE_CALLBACK(function) std::bind(&function, this), static_cast<void*>(this)
+#define XE_CALLBACK(function) std::bind(&function, this), static_cast<void*>(this) // function must be in format "ClassName::FuncName"
 
 namespace xe
 {
@@ -120,6 +120,7 @@ namespace xe
         static xe::Vector2 KeyAxis2D(const Key posX, const Key negX, const Key posY, const Key negY);
 
         //Recommended: Only Subscribe to one key action per object
+        //Use -> (xe::Key, xe::Event, XE_CALLBACK(ClassName::FuncName))
         static void Subscribe(const Key key, const Event pressRelease, std::function<void(void)> callback, void* objPtr, int playerNum = 0);
         static void Subscribe(const Mouse mouse, const Event pressRelease, std::function<void(void)> callback, void* objPtr, int playerNum = 0);
         static void Subscribe(const Button button, const Event pressRelease, std::function<void(void)> callback, void* objPtr, int playerNum = 0);
