@@ -39,6 +39,7 @@
 #include "SFML/Window.hpp"
 
 #define XE_CALLBACK(function) std::bind(&function, this), static_cast<void*>(this) // function must be in format "ClassName::FuncName"
+#define XE_CALLBACK_PTR(function, ptr) std::bind(&function, ptr), static_cast<void*>(ptr) // function must be in format "ClassName::FuncName"
 
 namespace xe
 {
