@@ -27,9 +27,6 @@
     <ClInclude Include="include\XephTools\Math.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\XephTools\InputSystem.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="include\XephTools\AesIO.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\Math.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\InputSystem.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\AesIO.cpp">

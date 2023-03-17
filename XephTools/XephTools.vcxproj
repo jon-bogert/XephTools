@@ -141,7 +141,6 @@
     <ClInclude Include="include\XephTools\AppData.h" />
     <ClInclude Include="include\XephTools\Assert.h" />
     <ClInclude Include="include\XephTools\BinaryIO.h" />
-    <ClInclude Include="include\XephTools\InputSystem.h" />
     <ClInclude Include="include\XephTools\Math.h" />
     <ClInclude Include="include\XephTools\SaveFile.h" />
     <ClInclude Include="include\XephTools\Timer.h" />
@@ -152,7 +151,6 @@
     <ClCompile Include="src\AesIO.cpp" />
     <ClCompile Include="src\BinaryIO.cpp" />
     <ClCompile Include="src\external\AES.cpp" />
-    <ClCompile Include="src\InputSystem.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\SaveFile.cpp" />
   </ItemGroup>

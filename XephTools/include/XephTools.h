@@ -53,9 +53,4 @@
 #include "XephTools/Math.h"
 #include "XephTools/SaveFile.h"
 
-//SFML LIBRARY DEPENDANT
-#ifdef XE_USING_SFML
-#include "XephTools/InputSystem.h"
-#endif
-
 #endif // XE_XEPH_TOOLS_H
