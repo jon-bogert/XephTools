@@ -41,6 +41,10 @@
 #endif // SFML_SFML_WINDOW_HPP
 #endif // SFML_SYSTEM_HPP
 
+#ifdef BOX2D_H
+#define XE_USING_BOX2D
+#endif // BOX2D_H
+
 // Header Only
 #include "XephTools/Assert.h"
 #include "XephTools/Timer.h"

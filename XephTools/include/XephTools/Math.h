@@ -67,13 +67,18 @@ namespace xe
 		operator sf::Vector2i() const { return { (int)x, (int)y }; };				// **EDIT** Added for SFML Compatibility
 		operator sf::Vector2u() const { return { (unsigned)x, (unsigned)y }; };		// **EDIT** Added for SFML Compatibility
 
-		Vector2& operator=(const xe::Vector2& rhs) { x = rhs.x; y = rhs.y; return *this; }		// **EDIT** Added for SFML Compatibility
+		Vector2& operator=(const sf::Vector2f& rhs) { x = rhs.x; y = rhs.y; return *this; }		// **EDIT** Added for SFML Compatibility
 		Vector2& operator=(const sf::Vector2i& rhs) { x = rhs.x; y = rhs.y; return *this; }		// **EDIT** Added for SFML Compatibility
 		Vector2& operator=(const sf::Vector2u& rhs) { x = rhs.x; y = rhs.y; return *this; }		// **EDIT** Added for SFML Compatibility
 
 		Vector2(const sf::Vector2f& other) : x(other.x), y(other.y) {}						// **EDIT** Added for SFML Compatibility
 		Vector2(const sf::Vector2i& other) : x(other.x), y(other.y) {}						// **EDIT** Added for SFML Compatibility
 		Vector2(const sf::Vector2u& other) : x(other.x), y(other.y) {}						// **EDIT** Added for SFML Compatibility
+#endif
+#ifdef XE_USING_BOX2D
+		operator b2Vec2() const { return { x, y }; };										// **EDIT** Added for box2D Compatibility
+		Vector2& operator=(const b2Vec2& rhs) { x = rhs.x; y = rhs.y; return *this; }		// **EDIT** Added for box2D Compatibility
+		Vector2(const b2Vec2& other) : x(other.x), y(other.y) {}							// **EDIT** Added for box2D Compatibility
 #endif
 	};
 	//----------------------------------------------------------------------------------------------------
