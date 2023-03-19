@@ -6,6 +6,8 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 
+#include "box2d/box2d.h"
+
 #include <XephTools.h>
 
 #include "TestClass.h"
