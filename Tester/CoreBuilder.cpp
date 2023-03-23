@@ -19,6 +19,9 @@ int main(int argc, char* argv[])
 
 	TestClass tc;
 	tc.Setup();
+	float a = 0.1f;
+	float b = 0.2f;
+	float result = a + b;
 
 	while (window.isOpen())
 	{

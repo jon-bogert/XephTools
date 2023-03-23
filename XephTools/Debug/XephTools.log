@@ -1,0 +1,90 @@
+﻿  AesBinaryIO.cpp
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(224,58): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(225,46): warning C4267: 'initializing': conversion from 'size_t' to 'uint8_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(305,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(305,24): warning C4244: '+=': conversion from 'float' to 'uint16_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(322,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(322,24): warning C4244: '+=': conversion from 'float' to 'uint16_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(339,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(339,24): warning C4244: '+=': conversion from 'float' to 'uint32_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(356,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(356,24): warning C4244: '+=': conversion from 'float' to 'uint32_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(373,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(373,24): warning C4244: '+=': conversion from 'float' to 'uint64_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(390,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(390,24): warning C4244: '+=': conversion from 'float' to 'uint64_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(407,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(407,24): warning C4244: '+=': conversion from 'float' to 'uint32_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(424,36): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(424,24): warning C4244: '+=': conversion from 'float' to 'uint64_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\AesBinaryIO.cpp(454,65): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+  AesIO.cpp
+  BinaryIO.cpp
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(218,58): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(219,46): warning C4267: 'initializing': conversion from 'size_t' to 'uint8_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(291,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(291,28): warning C4244: '+=': conversion from 'float' to 'uint16_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(306,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(306,28): warning C4244: '+=': conversion from 'float' to 'uint16_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(321,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(321,28): warning C4244: '+=': conversion from 'float' to 'uint32_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(336,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(336,28): warning C4244: '+=': conversion from 'float' to 'uint32_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(351,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(351,28): warning C4244: '+=': conversion from 'float' to 'uint64_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(366,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(366,28): warning C4244: '+=': conversion from 'float' to 'uint64_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(381,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(381,28): warning C4244: '+=': conversion from 'float' to 'uint32_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(396,40): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(396,28): warning C4244: '+=': conversion from 'float' to 'uint64_t', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\BinaryIO.cpp(426,65): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+  AES.cpp
+  InputSystem.cpp
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(71,56): warning C4244: '=': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(71,67): warning C4244: '=': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(72,56): warning C4244: '=': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(72,67): warning C4244: '=': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(75,41): warning C4244: 'initializing': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(75,53): warning C4244: 'initializing': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(76,41): warning C4244: 'initializing': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+D:\repos\C++\XephTools\XephTools\include\XephTools\Math.h(76,53): warning C4244: 'initializing': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+D:\repos\C++\XephTools\XephTools\src\InputSystem.cpp(174,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Math.cpp
+D:\repos\C++\XephTools\XephTools\src\Math.cpp(766,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\repos\C++\XephTools\XephTools\src\Math.cpp(776,47): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  SaveFile.cpp
+  Generating Code...
+  XephTools.vcxproj -> D:\repos\C++\XephTools\Debug\XephTools.lib

@@ -757,6 +757,10 @@ namespace xe
 	{
 		return static_cast<float>(static_cast<int>(num * 10 * decPlace + 0.5f) / (10.f * decPlace));
 	}
+	bool FloatComp(float a, float b)
+	{
+		return (a >= b - FLT_EPSILON && a <= b + FLT_EPSILON);
+	}
 	Random::Random()
 	{
 		srand(time(0));

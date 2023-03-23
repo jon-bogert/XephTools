@@ -817,6 +817,8 @@ namespace xe
 	int Round(float num);
 	float Round(float num, int decPlace);
 
+	bool FloatComp(float a, float b);
+
 	class Random final
 	{
 		Random();
