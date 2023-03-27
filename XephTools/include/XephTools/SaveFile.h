@@ -33,7 +33,7 @@
 
 namespace xe
 {
-	enum class FileFormat { Text, Binary, TextEncrypted, BinaryEncrypted };
+	enum class FileFormat { Text, Binary, Json, TextEncrypted, BinaryEncrypted };
 
 	struct Vector2;
 	class SaveFile
@@ -76,11 +76,13 @@ namespace xe
 		void SaveTextEncrypted();
 		void SaveBinary();
 		void SaveBinaryEncrypted();
+		void SaveJson();
 
 		void LoadText();
 		void LoadTextEncrypted();
 		void LoadBinary();
 		void LoadBinaryEncrypted();
+		void LoadJson();
 	};
 }
 #endif // XE_SAVE_FILE_H
