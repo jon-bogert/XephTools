@@ -27,9 +27,12 @@
 #include "XephTools/Math.h"
 #include <iostream>
 #include <sstream>
+#include <regex>
 
 #include "XephTools/AesBinaryIO.h"
 #include "XephTools/BinaryIO.h"
+
+#include "nlohmann/json.hpp"
 
 xe::SaveFile::SaveFile(std::string fileName, FileFormat fileFormat, std::string key)
 	: _fileName(fileName), _fileFormat(fileFormat), _key(key)
@@ -53,6 +56,9 @@ void xe::SaveFile::Save()
 		break;
 	case FileFormat::BinaryEncrypted:
 		SaveBinaryEncrypted();
+		break;
+	case FileFormat::Json:
+		SaveJson();
 		break;
 	}
 }
@@ -85,6 +91,9 @@ void xe::SaveFile::Reload()
 	case FileFormat::BinaryEncrypted:
 		LoadBinaryEncrypted();
 		break;
+	case FileFormat::Json:
+		LoadJson();
+		break;
 	}
 }
 
@@ -95,7 +104,7 @@ int xe::SaveFile::GetInt(std::string key) const
 		std::cout << "xe::SaveFile did not contain value with key: " << key << std::endl;
 		return 0;
 	}
-	if (_data.at(key).type != Info::Type::String)
+	if (_data.at(key).type != Info::Type::Int)
 	{
 		std::cout << "xe::SaveFile value with key: " << key << " is not of type int" << std::endl;
 		return 0;
@@ -119,7 +128,7 @@ float xe::SaveFile::GetFloat(std::string key) const
 		std::cout << "xe::SaveFile did not contain value with key: " << key << std::endl;
 		return 0.f;
 	}
-	if (_data.at(key).type != Info::Type::String)
+	if (_data.at(key).type != Info::Type::Float)
 	{
 		std::cout << "xe::SaveFile value with key: " << key << " is not of type float" << std::endl;
 		return 0.f;
@@ -378,6 +387,53 @@ void xe::SaveFile::SaveBinaryEncrypted()
 	file.Close();
 }
 
+void xe::SaveFile::SaveJson()
+{
+	nlohmann::json formatter;
+	for (auto& i : _data)
+	{
+		switch (i.second.type)
+		{
+		case Info::Type::Int:
+			formatter[i.first] = std::stoi(i.second.data);
+			break;
+		case Info::Type::Float:
+			formatter[i.first] = std::stof(i.second.data);
+			break;
+		case Info::Type::Bool:
+			formatter[i.first] = (i.second.data == "true");
+			break;
+		case Info::Type::String:
+			formatter[i.first] = i.second.data;
+			break;
+		case Info::Type::Vector2:
+			std::regex pattern("[0-9.]+");
+			std::smatch match;
+			std::vector<std::string> results;
+			std::string::const_iterator iter(i.second.data.cbegin());
+			while (std::regex_search(iter, i.second.data.cend(), match, pattern))
+			{
+				results.push_back(match.str());
+				iter = match.suffix().first;
+			}
+			if (results.size() < 2)
+				std::cout << "Invalid Vector2 format" << std::endl;
+
+			formatter[i.first]["x"] = std::stof(results[0]);
+			formatter[i.first]["y"] = std::stof(results[1]);
+			break;
+		}
+	}
+	std::ofstream file;
+	file.open(_fileName);
+	XE_ASSERT(file.is_open(), "Could not open/create write file: " + _fileName);
+
+	file << formatter.dump();
+
+	file.close();
+
+}
+
 void xe::SaveFile::LoadText()
 {
 	std::ifstream file;
@@ -534,4 +590,55 @@ void xe::SaveFile::LoadBinaryEncrypted()
 	}
 
 	file.Close();
+}
+
+void xe::SaveFile::LoadJson()
+{
+	std::ifstream file;
+	file.open(_fileName);
+	if (!file.is_open())
+	{
+		std::cout << "Could not open file: " << _fileName << ". Creating new file..." << std::endl;
+		Save();
+		return;
+	}
+	nlohmann::json formatter = nlohmann::json::parse(file);
+
+	for (auto it = formatter.begin(); it != formatter.end(); ++it)
+	{
+		Info info;
+		if (it->is_number_integer())
+		{
+			info.data = std::to_string(it->get<int>());
+			info.type = Info::Type::Int;
+		}
+		else if (it->is_number_float())
+		{
+			info.data = std::to_string(it->get<float>());
+			info.type = Info::Type::Float;
+		}
+		else if (it->is_boolean())
+		{
+			info.data = (it->get<bool>()) ? "true" : "false";
+			info.type = Info::Type::Bool;
+		}
+		else if (it->is_string())
+		{
+			info.data = it->get<std::string>();
+			info.type = Info::Type::String;
+		}
+		else if (it->is_object() && it->contains("x") && it->contains("y"))
+		{
+			info.data = std::to_string(it.value()["x"].get<float>()) + " " + std::to_string(it.value()["y"].get<float>());
+			info.type = Info::Type::Vector2;
+		}
+		else
+		{
+			std::cout << "xe::SaveFile: Unknown type in Json file" << std::endl;
+			continue;
+		}
+
+		_data.insert({ it.key(), info });
+	}
+
 }
