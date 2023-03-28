@@ -22,7 +22,6 @@
 
  USAGE NOTES:
   - This Particular unit fo XephTools is meant to be used with SFML: https://www.sfml-dev.org/
-  - XInput is required: Add "xinput.lib" to Linker->Additional Dependencies
 
 ========================================================*/
 

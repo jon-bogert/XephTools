@@ -42,5 +42,7 @@ int main(int argc, char* argv[])
 	std::cout << save.GetVector2("position") << std::endl;
 	std::cout << (save.GetBool("isCool") ? "TRUE" : "FALSE") << std::endl;
 
+	std::cout << _APPDATA_;
+
 	return 0;
 }

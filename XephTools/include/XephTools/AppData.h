@@ -21,7 +21,7 @@
  3. This notice may not be removed or altered from any source distribution.
 
  USAGE NOTES:
-  - Shell32 is required: Add "Shell32.lib" to Linker->Additional Dependencies
+  - Shell32 is required: Add "Shell32.lib" to Linker->Additional Dependencies if using only the header file
 
 ========================================================*/
 
@@ -29,12 +29,12 @@
 #ifndef XE_APPDATA_H
 #define XE_APPDATA_H
 
-#include <ShlObj.h> // IMPORTANT: Must include Shell32.lib if using just the header file
+#include <ShlObj.h> // IMPORTANT: Must link "Shell32.lib" if using just the header file
 #include <iostream>
 
 namespace xe
 {
-	std::string AppDataDir()
+	inline std::string AppDataDir()
 	{
 		PWSTR appdata = NULL;
 		if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, NULL, &appdata) == S_OK)

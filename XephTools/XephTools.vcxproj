@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="src\AesBinaryIO.cpp" />
     <ClCompile Include="src\AesIO.cpp" />
+    <ClCompile Include="src\AppData.cpp" />
     <ClCompile Include="src\BinaryIO.cpp" />
     <ClCompile Include="src\external\AES.cpp" />
     <ClCompile Include="src\InputSystem.cpp" />
