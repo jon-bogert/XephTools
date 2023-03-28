@@ -14,21 +14,21 @@
 
 int main(int argc, char* argv[])
 {
-	//sf::RenderWindow window(sf::VideoMode(800, 600), "Window");
-	//xe::Timer time;
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Window");
+	xe::Timer time;
 
-	//TestClass tc;
-	//tc.Setup();
-	//float a = 0.1f;
-	//float b = 0.2f;
-	//float result = a + b;
+	TestClass tc;
+	tc.Setup();
+	float a = 0.1f;
+	float b = 0.2f;
+	float result = a + b;
 
-	//while (window.isOpen())
-	//{
-	//	xe::InputSystem::Update(&window, time.DeltaTime());
+	while (window.isOpen())
+	{
+		xe::InputSystem::Update(&window, time.DeltaTime());
 
 
-	//}
+	}
 	xe::SaveFile save("testfile.json", xe::FileFormat::Json);
 	//save.SetVector2("position", xe::Vector2(3.14159f, 420.69f));
 	//save.SetInt("lives", 5);
