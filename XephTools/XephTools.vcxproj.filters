@@ -62,5 +62,8 @@
     <ClCompile Include="src\AesBinaryIO.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\AppData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

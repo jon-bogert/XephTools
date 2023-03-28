@@ -20,7 +20,7 @@ InputSystem (Only available when including SFML in project)
 	- Replacement input system for SFML (https://www.sfml-dev.org/)
 	- Improved Key/Button enumerators
 	- Subscribe and unsubscribe functions to press and release events
-	- Uses XInput for better gamepad trigger values (remember to add "xinput.lib")
+	- Uses XInput for better gamepad trigger values
 
 Math
 	- Math Library that implicitly converts to SFML Data types (if SFML is in project)
@@ -29,7 +29,7 @@ SaveFile
 	- Save file system for games;
 	- SaveFile loads and stores data that can be get or set by an object.
 	- Internal data is stored in file when .Save() is called
-	- Save as Text, TextEncrypted, Binary, or BinaryEncrypted file types
+	- Save as Text, TextEncrypted, Json, Binary, or BinaryEncrypted file types
 	
 Timer
 	- Timer for when sf::Clock is not available, with a few extra features;
@@ -38,9 +38,10 @@ Timer
 	
 AppData
 	- Provides Macro std::string for "%APPDATA%"
-	- _APPDATA_ -> "C:\\Users\\<name>\\AppData\\Roaming"
-	- APPDATA_PATH = _APPDATA_
-	- _APPDATA_CSTR_ -> Gets path as const char*
+	- "_APPDATA_" -> "C:\\Users\\<name>\\AppData\\Roaming"
+	- "APPDATA_PATH" = "_APPDATA_"
+	- "_APPDATA_CSTR_" -> Gets path as const char*
+	- Link "Shell32.lib" if using as header-only
 	
 INSTALLATION (VS 20XX):
 	1. if using SFML, install as prefered.
@@ -48,7 +49,6 @@ INSTALLATION (VS 20XX):
 	3. In Project Settings:
 		a) Add "include" to C/C++->General->Additional Include Directories
 		b) Add "lib" to Linker->General->Additional Library Directoies
-		c) Add "xephtools.lib" to Linker->Input->Additional Dependencies
-		c) Add "Shell32.lib" to Linker->Input->Additional Dependencies
+		c) Add "xephtools.lib" and "xephtools-d.lib" to Linker->Input->Additional Dependencies
 		d) if planning to use SFML, add "xinput.lib" to Linker->Input->Additional Dependencies as well
 	4. Add #include "XephTools.h" to your scripts
