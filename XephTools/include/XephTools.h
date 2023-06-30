@@ -50,6 +50,7 @@
 #include "XephTools/Timer.h"
 #include "XephTools/Random.h"
 #include "XephTools/AppData.h"
+#include "XephTools/Event.h"
 
 // Header & CPP
 #include "XephTools/AesIO.h"
