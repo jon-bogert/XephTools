@@ -48,6 +48,7 @@
 // Header Only
 #include "XephTools/Assert.h"
 #include "XephTools/Timer.h"
+#include "XephTools/Random.h"
 #include "XephTools/AppData.h"
 
 // Header & CPP
