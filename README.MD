@@ -3,17 +3,11 @@ Some modules are to be used with SFML (https://www.sfml-dev.org/)
 	if planning on using, Add "xinput.lib" to Linker->Input->Additional Dependencies
 	
 DESCRIPTIONS:
-
-AesBinaryIO
-	- Reader and Writer for binary files that are encrypted with 128 bit Advanced Encryption Standard (AES)
-	
-AesIO
-	- Reader and Writer for formatted text files that are encrypted with 128 bit Advanced Encryption Standard (AES)
 	
 Assert
 	- Custom Assert that allows for a condition and message that is triggered on "false" (call XE_ASSERT(condition, message))
 	
-BinaryIO
+BinaryReader/BinaryWriter
 	- Reader amd Writer for binary files (non-encrypted)
 	
 InputSystem (Only available when including SFML in project)
@@ -42,13 +36,3 @@ AppData
 	- "APPDATA_PATH" = "_APPDATA_"
 	- "_APPDATA_CSTR_" -> Gets path as const char*
 	- Link "Shell32.lib" if using as header-only
-	
-INSTALLATION (VS 20XX):
-	1. if using SFML, install as prefered.
-	2. Add "lib" and "include" folders to project directory
-	3. In Project Settings:
-		a) Add "include" to C/C++->General->Additional Include Directories
-		b) Add "lib" to Linker->General->Additional Library Directoies
-		c) Add "xephtools.lib" and "xephtools-d.lib" to Linker->Input->Additional Dependencies
-		d) if planning to use SFML, add "xinput.lib" to Linker->Input->Additional Dependencies as well
-	4. Add #include "XephTools.h" to your scripts
