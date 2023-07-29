@@ -47,15 +47,15 @@
 
 // Header Only
 #include "XephTools/Assert.h"
+#include "XephTools/BinaryReader.h"
+#include "XephTools/BinaryWriter.h"
 #include "XephTools/Timer.h"
 #include "XephTools/Random.h"
 #include "XephTools/AppData.h"
 #include "XephTools/Event.h"
 
+
 // Header & CPP
-#include "XephTools/AesIO.h"
-#include "XephTools/BinaryIO.h"
-#include "XephTools/AesBinaryIO.h"
 #include "XephTools/Math.h"
 #include "XephTools/SaveFile.h"
 
