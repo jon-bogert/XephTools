@@ -47,6 +47,7 @@
 
 // Header Only
 #include "XephTools/Assert.h"
+#include "XephTools/Benchmark.h"
 #include "XephTools/BinaryReader.h"
 #include "XephTools/BinaryWriter.h"
 #include "XephTools/Timer.h"
