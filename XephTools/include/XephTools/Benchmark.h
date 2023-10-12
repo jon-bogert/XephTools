@@ -26,6 +26,8 @@ namespace xe
     struct BenchmarkSession
     {
         std::string Name;
+        BenchmarkSession() = default;
+        inline Benchmark(const std::string& name) : Name(name) {}
     };
 
     class Benchmarker
