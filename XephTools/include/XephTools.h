@@ -50,6 +50,7 @@
 #include "XephTools/Benchmark.h"
 #include "XephTools/BinaryReader.h"
 #include "XephTools/BinaryWriter.h"
+#include "XephTools/Clipboard.h"
 #include "XephTools/Timer.h"
 #include "XephTools/Random.h"
 #include "XephTools/AppData.h"

@@ -1,6 +1,6 @@
 /*========================================================
 
- XephTools - InputSystem
+ XephTools - AppData
  Copyright (C) 2022 Jon Bogert (jonbogert@gmail.com)
 
  This software is provided 'as-is', without any express or implied warranty.
