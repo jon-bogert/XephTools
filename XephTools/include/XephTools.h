@@ -55,6 +55,7 @@
 #include "XephTools/Random.h"
 #include "XephTools/AppData.h"
 #include "XephTools/Event.h"
+#include "XephTools/FileBrowser.h"
 
 
 // Header & CPP
