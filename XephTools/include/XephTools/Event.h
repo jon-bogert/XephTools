@@ -1,7 +1,7 @@
 /*========================================================
 
  XephTools - Event
- Copyright (C) 2022 Jon Bogert (jonbogert@gmail.com)
+ Copyright (C) 2024 Jon Bogert (jonbogert@gmail.com)
 
  This software is provided 'as-is', without any express or implied warranty.
  In no event will the authors be held liable for any damages arising from the use of this software.
@@ -22,46 +22,132 @@
 
 ========================================================*/
 
-#ifndef __XE_EVENT_H__
-#define __XE_EVENT_H__
+#ifndef XE_EVENT_H
+#define XE_EVENT_H
 
+#include <cstdint>
 #include <functional>
-#include <list>
-
-#define XEEventCallback(function) static_cast<void*>(this), std::bind(&function, this)
-#define XEEventCallbackPtr(function, ptr) static_cast<void*>(ptr), std::bind(&function, ptr)
+#include <random>
+#include <type_traits>
+#include <unordered_map>
 
 namespace xe
 {
-    class Event
-    {
-    private:
-        struct EventEntry
-        {
-            void* object;
-            std::function<void(void)> function;
-        };
+	using FuncID = uint32_t;
 
-        std::list<EventEntry> events;
+	template <typename Context = void, typename Enable = void>
+	class Event;
 
-    public:
-        void Subscribe(void* object, std::function<void(void)> function)
-        {
-            events.push_back({ object, function });
-        }
+	template <typename Context>
+	class Event<typename Context, typename std::enable_if_t<std::is_void_v<Context>>>
+	{
+	public:
 
-        void UnsubscribeAll(void* object)
-        {
-            events.remove_if([=](const EventEntry& x) {return object == x.object; });
-        }
+		FuncID Subscribe(const std::function<void(Context)>& callback)
+		{
+			FuncID id = NewID();
+			m_callbacks[id] = callback;
+			return id;
+		}
 
-        void Invoke() {
-            for (const auto& event : events)
-            {
-                event.function();
-            }
-        }
-    };
+		bool Unsubscribe(const FuncID id)
+		{
+			if (!Contains(id))
+				return false;
+			m_callbacks.erase(id);
+			return true;
+		}
+
+		void Invoke() const
+		{
+			for (const auto& cb : m_callbacks)
+			{
+				cb.second();
+			}
+		}
+
+		bool Contains(const FuncID id) const
+		{
+			return m_callbacks.find(id) != m_callbacks.end();
+		}
+		
+		void Clear()
+		{
+			m_callbacks.clear();
+		}
+
+		size_t Size() const
+		{
+			return m_callbacks.size();
+		}
+
+	private:
+		FuncID NewID() const
+		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<uint32_t> dis(0, UINT32_MAX);
+			return dis(gen);
+		}
+
+		std::unordered_map<FuncID, std::function<void(Context)>> m_callbacks;
+
+	};
+
+	template <typename Context>
+	class Event<typename Context, typename std::enable_if_t<!std::is_void_v<Context>>>
+	{
+	public:
+
+		FuncID Subscribe(const std::function<void(Context)>& callback)
+		{
+			FuncID id = NewID();
+			m_callbacks[id] = callback;
+			return id;
+		}
+
+		bool Unsubscribe(const FuncID id)
+		{
+			if (!Contains(id))
+				return false;
+			m_callbacks.erase(id);
+			return true;
+		}
+
+		void Invoke(const Context& ctx) const
+		{
+			for (const auto& cb : m_callbacks)
+			{
+				cb.second(ctx);
+			}
+		}
+
+		bool Contains(const FuncID id) const
+		{
+			return m_callbacks.find(id) != m_callbacks.end();
+		}
+
+		void Clear()
+		{
+			m_callbacks.clear();
+		}
+
+		size_t Size() const
+		{
+			return m_callbacks.size();
+		}
+
+	private:
+		FuncID NewID() const
+		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<uint32_t> dis(0, UINT32_MAX);
+			return dis(gen);
+		}
+
+		std::unordered_map<FuncID, std::function<void(Context)>> m_callbacks;
+	};
 }
 
-#endif //__XE_EVENT_H__
+#endif //!XE_EVENT_H
