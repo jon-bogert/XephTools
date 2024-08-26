@@ -56,6 +56,7 @@
 #include "XephTools/AppData.h"
 #include "XephTools/Event.h"
 #include "XephTools/FileBrowser.h"
+#include "XephTools/EntryPoint.h"
 
 
 // Header & CPP
