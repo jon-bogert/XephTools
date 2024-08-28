@@ -35,13 +35,36 @@ namespace xe
 {
 	std::vector<std::wstring> ParseArgs(wchar_t* pCmdLine)
 	{
-		std::wistringstream stream(pCmdLine);
 		std::wstring arg;
 		std::vector<std::wstring> result;
+		bool inQuote = false;
 
-		while (stream >> arg)
+		while (*pCmdLine != 0)
 		{
-			result.push_back(arg);
+			if (*pCmdLine == L'\"')
+			{
+				inQuote = !inQuote;
+				if (!arg.empty())
+				{
+					result.push_back(arg);
+					arg.clear();
+				}
+				++pCmdLine;
+				continue;
+			}
+			if (!inQuote && *pCmdLine == L' ')
+			{
+				if (!arg.empty())
+				{
+					result.push_back(arg);
+					arg.clear();
+				}
+				++pCmdLine;
+				continue;
+			}
+
+			arg.push_back(*pCmdLine);
+			++pCmdLine;
 		}
 		return result;
 	}
@@ -58,13 +81,36 @@ namespace xe
 
 	std::vector<std::string> ParseArgs(char* pCmdLine)
 	{
-		std::istringstream stream(pCmdLine);
 		std::string arg;
 		std::vector<std::string> result;
+		bool inQuote = false;
 
-		while (stream >> arg)
+		while (*pCmdLine != 0)
 		{
-			result.push_back(arg);
+			if (*pCmdLine == '\"')
+			{
+				inQuote = !inQuote;
+				if (!arg.empty())
+				{
+					result.push_back(arg);
+					arg.clear();
+				}
+				++pCmdLine;
+				continue;
+			}
+			if (!inQuote && *pCmdLine == ' ')
+			{
+				if (!arg.empty())
+				{
+					result.push_back(arg);
+					arg.clear();
+				}
+				++pCmdLine;
+				continue;
+			}
+
+			arg.push_back(*pCmdLine);
+			++pCmdLine;
 		}
 		return result;
 	}
