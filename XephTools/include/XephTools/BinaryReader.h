@@ -1,6 +1,6 @@
 /*========================================================
 
- XephTools - BinaryReader
+ XephTools - Binary Reader
  Copyright (C) 2022 Jon Bogert (jonbogert@gmail.com)
 
  This software is provided 'as-is', without any express or implied warranty.
@@ -22,177 +22,189 @@
 
 ========================================================*/
 
-#ifndef __XE_BINARYREADER_H__
-#define __XE_BINARYREADER_H__
+#ifndef XE_BINARYREADER_H
+#define XE_BINARYREADER_H
 
+#include <filesystem>
 #include <fstream>
+#include <string>
+#include <type_traits>
 
 namespace xe
 {
-    class BinaryReader
-    {
-    private:
-        std::ifstream _file;
+	class BinaryReader
+	{
+	public:
+		enum class SeekMode
+		{
+			Beginning,
+			Cursor,
+			End,
+		};
 
-        uint8_t ReadByte()
-        {
-            uint8_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+		BinaryReader() = default;
+		BinaryReader(const std::filesystem::path& path) { Open(path); }
 
-    public:
-        BinaryReader() = default;
-        BinaryReader(const std::string& filePath)
-            : _file(filePath, std::ios::binary)
-        {
-            if (!_file)
-            {
-                throw std::runtime_error("Failed to open file.");
-            }
-        }
+		~BinaryReader() { Close(); }
 
-        ~BinaryReader()
-        {
-            Close();
-        }
+		BinaryReader(const BinaryReader& other) = delete;
+		BinaryReader operator=(const BinaryReader& other) = delete;
+		BinaryReader(BinaryReader&& other)
+		{
+			m_file = std::move(other.m_file);
+			m_size = std::move(other.m_size);
+		}
+		BinaryReader& operator=(BinaryReader&& other)
+		{
+			m_file = std::move(other.m_file);
+			m_size = std::move(other.m_size);
+			return *this;
+		}
 
-        BinaryReader(const BinaryReader& other) = delete;
-        BinaryReader(const BinaryReader&& other) = delete;
-        BinaryReader& operator=(BinaryReader& other) = delete;
-        BinaryReader& operator=(BinaryReader&& other) = delete;
+		bool Open(const std::filesystem::path& path)
+		{
+			if (IsOpen())
+				throw (std::exception("File is already open."));
 
-        size_t ReadSize()
-        {
-            size_t count = 0;
-            size_t shift = 0;
-            uint8_t bytePart;
+			m_file.open(path, std::ios::binary | std::ios::ate);
+			if (!m_file.is_open())
+				return false;
 
-            do
-            {
-                if (shift == 5 * 7)
-                {
-                    throw std::runtime_error("Format exception: 7-bit encoded int is invalid.");
-                }
+			m_size = m_file.tellg();
+			m_file.seekg(0, std::ios::beg);
+			return true;
+		}
+		void Close()
+		{
+			if (!IsOpen())
+				return;
 
-                bytePart = ReadByte();
-                count |= static_cast<size_t>((bytePart & 0x7F)) << shift;
-                shift += 7;
+			m_file.close();
+			m_size = 0;
+		}
+		bool IsOpen() const
+		{
+			return m_file.is_open();
+		}
 
-            } while (bytePart >= 0x80);
+		void Seek(size_t pos, SeekMode from = SeekMode::Beginning)
+		{
+			m_file.seekg(pos, static_cast<int>(from));
+		}
+		size_t Tell()
+		{
+			return m_file.tellg();
+		}
 
-            return count;
-        }
+		bool EoF()
+		{
+			return (!IsOpen() || m_file.eof() || m_file.peek() == -1);
+		}
+		bool Empty() const
+		{
+			return (m_size == 0);
+		}
+		size_t Size() const
+		{
+			return m_size;
+		}
 
-        int8_t ReadInt8()
-        {
-            int8_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+		size_t GetSizeValue()
+		{
+			size_t result = 0;
+			size_t shift = 0;
+			uint8_t byte;
 
-        int16_t ReadInt16()
-        {
-            int16_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+			do
+			{
+				if (!m_file.read(reinterpret_cast<char*>(&byte), 1))
+					return 0;
 
-        int32_t ReadInt32()
-        {
-            int32_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+				result |= static_cast<size_t>(byte & 0x7F) << shift;
+				shift += 7;
 
-        int64_t ReadInt64()
-        {
-            int64_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+				if (shift >= sizeof(size_t) * 8)
+					return 0;
+				
+			} while (byte & 0x80);
+			return result;
+		}
 
-        uint8_t ReadUInt8()
-        {
-            uint8_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+		// String
+		template <typename T>
+		typename std::enable_if_t<std::is_base_of_v<std::string, T>, T>
+			GetValue(size_t size = 0)
+		{
+			if (size == 0)
+				size = GetSizeValue();
 
-        uint16_t ReadUInt16()
-        {
-            uint16_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+			std::string result;
+			result.resize(size + 1);
+			m_file.read(reinterpret_cast<char*>(result.data()), size);
+			result[size] = '\0';
+			return result;
+		}
 
-        uint32_t ReadUInt32()
-        {
-            uint32_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+		template <typename T>
+		typename std::enable_if_t<std::is_base_of_v<std::string, T>, void>
+			GetValue(T& buffer, size_t size = 0)
+		{
+			if (size == 0)
+				size = GetSizeValue();
 
-        uint64_t ReadUInt64()
-        {
-            uint64_t value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+			buffer.resize(size + 1);
+			m_file.read(reinterpret_cast<char*>(buffer.data()), size);
+			buffer[size] = '\0';
+		}
 
-        float ReadFloat()
-        {
-            float value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+		// Byte Buffer
+		template <typename T>
+		typename std::enable_if_t<std::is_base_of_v<std::vector<uint8_t>, T>, T>
+			GetValue(size_t size = 0)
+		{
+			if (size == 0)
+				size = GetSizeValue();
 
-        double ReadDouble()
-        {
-            double value;
-            _file.read(reinterpret_cast<char*>(&value), sizeof(value));
-            return value;
-        }
+			std::vector<uint8_t> result;
+			result.resize(size);
+			m_file.read(reinterpret_cast<char*>(result.data()), size);
+			return result;
+		}
 
-        std::string ReadString()
-        {
-            size_t length = ReadSize();
-            std::string value(length, '\0');
-            _file.read(&value[0], length);
-            return value;
-        }
+		template <typename T>
+		typename std::enable_if_t<std::is_base_of_v<std::vector<uint8_t>, T>, void>
+			GetValue(T& buffer, size_t size = 0)
+		{
+			if (size == 0)
+				size = GetSizeValue();
 
-        bool IsOpen()
-        {
-            return _file.is_open();
-        }
+			buffer.resize(size);
+			m_file.read(reinterpret_cast<char*>(buffer.data()), size);
+		}
 
-        void Open(const char* filename)
-        {
-            Close();
-            _file.open(filename, std::ios::binary);
-            if (!_file)
-            {
-                throw std::runtime_error("Failed to open file.");
-            }
-        }
+		// Default overloads
+		template <typename T>
+		typename std::enable_if_t<!std::is_base_of_v<std::string, T> &&
+			!std::is_base_of_v<std::vector<uint8_t>, T>, T>
+			GetValue()
+		{
+			T result{};
+			m_file.read(reinterpret_cast<char*>(&result), sizeof(T));
+			return result;
+		}
 
-        void Close()
-        {
-            if (_file.is_open())
-                _file.close();
-        }
+		template <typename T>
+		typename std::enable_if_t<!std::is_base_of_v<std::string, T> &&
+			!std::is_base_of_v<std::vector<uint8_t>, T>, void>
+			GetValue(T& buffer)
+		{
+			m_file.read(reinterpret_cast<char*>(&buffer), sizeof(T));
+		}
 
-        bool EoF()
-        {
-            return _file.eof();
-        }
-
-        int Peek()
-        {
-            return _file.peek();
-        }
-    };
+	private:
+		std::ifstream m_file;
+		size_t m_size;
+	};
 }
 
-#endif // __XE_BINARYREADER_H__
+#endif // !XE_BINARYREADER_H

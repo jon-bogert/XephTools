@@ -1,6 +1,6 @@
 /*========================================================
 
- XephTools - BinaryWriter
+ XephTools - Binary Writer
  Copyright (C) 2022 Jon Bogert (jonbogert@gmail.com)
 
  This software is provided 'as-is', without any express or implied warranty.
@@ -20,138 +20,121 @@
 
  3. This notice may not be removed or altered from any source distribution.
 
+ Note:
+  - 'const char*' will not work properly. Wrap in std::string constructor.
+
 ========================================================*/
 
-#ifndef __XE_BINARYWRITER_H__
-#define __XE_BINARYWRITER_H__
+#ifndef XE_BINARYWRITER_H
+#define XE_BINARYWRITER_H
 
+#include <filesystem>
 #include <fstream>
+#include <string>
+#include <type_traits>
 
 namespace xe
 {
-    class BinaryWriter
-    {
-    private:
-        std::ofstream _file;
+	class BinaryWriter
+	{
+	public:
+		BinaryWriter() = default;
+		BinaryWriter(const std::filesystem::path& path, bool truncate = true) { Open(path, truncate); }
 
-        void WriteByte(uint8_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+		~BinaryWriter() { Close(); }
 
-    public:
-        BinaryWriter() = default;
-        BinaryWriter(const std::string& filePath)
-            : _file(filePath, std::ios::binary) {
-            if (!_file)
-            {
-                throw std::runtime_error("Failed to open file.");
-            }
-        }
+		BinaryWriter(const BinaryWriter& other) = delete;
+		BinaryWriter operator=(const BinaryWriter& other) = delete;
+		BinaryWriter(BinaryWriter&& other) noexcept
+		{
+			m_file = std::move(other.m_file);
+		}
+		BinaryWriter& operator=(BinaryWriter&& other) noexcept
+		{
+			m_file = std::move(other.m_file);
+			return *this;
+		}
 
-        ~BinaryWriter() {
-            Close();
-        }
+		bool Open(const std::filesystem::path& path, bool truncate = true)
+		{
+			if (IsOpen())
+				throw (std::exception("File is already open."));
 
-        BinaryWriter(const BinaryWriter& other) = delete;
-        BinaryWriter(const BinaryWriter&& other) = delete;
-        BinaryWriter& operator=(BinaryWriter& other) = delete;
-        BinaryWriter& operator=(BinaryWriter&& other) = delete;
+			int doTrunk = (truncate) ? std::ios::trunc : 0;
 
-        void WriteSize(size_t value)
-        {
-            size_t unsignedValue = static_cast<size_t>(value);
-            while (unsignedValue >= 0x80)
-            {
-                WriteByte(static_cast<uint8_t>(unsignedValue | 0x80));
-                unsignedValue >>= 7;
-            }
-            WriteByte(static_cast<uint8_t>(unsignedValue));
-        }
+			m_file.open(path, std::ios::binary | doTrunk);
+			if (!m_file.is_open())
+				return false;
 
-        void Write(const int8_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+			return true;
+		}
+		void Close()
+		{
+			if (!IsOpen())
+				return;
 
-        void Write(const int16_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+			m_file.close();
+		}
+		bool IsOpen() const
+		{
+			return m_file.is_open();
+		}
 
-        void Write(const int32_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+		void WriteSizeValue(size_t size)
+		{
+			do
+			{
+				uint8_t byte = size & 0x7F;
+				size >>= 7;
 
-        void Write(const int64_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+				if (size > 0)
+				{
+					byte |= 0x80;
+				}
 
-        void Write(const uint8_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+				m_file.write(reinterpret_cast<char*>(&byte), 1);
+			} while (size > 0);
+		}
 
-        void Write(const uint16_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+		// String
+		template <typename T>
+		typename std::enable_if_t<std::is_base_of_v<std::string, T>, void>
+			WriteValue(const T& value, size_t size = 0)
+		{
+			if (size == 0)
+			{
+				size = value.length();
+				WriteSizeValue(size);
+			}
 
-        void Write(const uint32_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+			m_file.write(reinterpret_cast<const char*>(value.c_str()), size);
+		}
 
-        void Write(const uint64_t value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+		// Byte Buffer
+		template <typename T>
+		typename std::enable_if_t<std::is_base_of_v<std::vector<uint8_t>, T>, void>
+			WriteValue(const T& value, size_t size = 0)
+		{
+			if (size == 0)
+			{
+				size = value.size();
+				WriteSizeValue(size);
+			}
 
-        void Write(const float value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+			m_file.write(reinterpret_cast<const char*>(value.data()), size);
+		}
 
-        void Write(const double value)
-        {
-            _file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-        }
+		template <typename T>
+		typename std::enable_if_t<!std::is_base_of_v<std::string, T> &&
+			!std::is_base_of_v<std::vector<uint8_t>, T>, void>
+			WriteValue(const T& value)
+		{
+			m_file.write(reinterpret_cast<const char*>(&value), sizeof(T));
+		}
 
-        void Write(const char* value, size_t size) {
-            WriteSize(size);
-            _file.write(value, size);
-        }
-
-        void Write(const std::string& value) {
-            WriteSize(value.size());
-            _file.write(value.c_str(), value.size());
-        }
-
-        bool IsOpen()
-        {
-            return _file.is_open();
-        }
-
-        void Open(const char* filename)
-        {
-            Close();
-            _file.open(filename, std::ios::binary);
-            if (!_file)
-            {
-                throw std::runtime_error("Failed to open file.");
-            }
-        }
-
-        void Close()
-        {
-            if (_file.is_open())
-            {
-                _file.close();
-            }
-        }
-    };
+	private:
+		std::ofstream m_file;
+	};
 }
 
-#endif // __XE_BINARYWRITER_H__
+#endif // !XE_BINARYWRITER_H
