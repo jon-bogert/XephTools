@@ -51,6 +51,7 @@
 #include "XephTools/BinaryReader.h"
 #include "XephTools/BinaryWriter.h"
 #include "XephTools/Clipboard.h"
+#include "XephTools/generic_ptr.h"
 #include "XephTools/Timer.h"
 #include "XephTools/Random.h"
 #include "XephTools/AppData.h"
