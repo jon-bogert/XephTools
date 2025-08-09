@@ -127,7 +127,7 @@ int main()
 Access to various file and folder browsers. Allows for file extention specifications. All Methods return empty paths if cancelled.
 
 ### Generic Pointer (generic_ptr.h)
-Generic pointer combines the conviniences of a `std::unique_ptr` and `void*`. Destructors are automatically called while also not having to specify types within header files. Perfect for creating wrappers for libaries that hide their internal libarary headers while also maintaining safe memory management techniques. Use `xe::generic_ptr::as<T>()` to for clean casting to a reference of that type and `xe::generic_ptr::get<T>()` to get a raw pointer of that type.
+Generic pointer combines the conviniences of a `std::unique_ptr` and `void*`. Destructors are automatically called while also not having to specify types within header files. Perfect for creating wrappers for libaries that hide their internal libarary headers while also maintaining safe memory management techniques. Use `xe::generic_ptr::as<T>()` for clean casting to a reference of that type and `xe::generic_ptr::get<T>()` to get a raw pointer of that type.
 ```cpp
 // Example header file
 
